@@ -1,3 +1,4 @@
 # yoga
 a yoga application
-![simulator_screenshot_559900C2-C174-46CE-9F20-FA978B5E7ECB](https://user-images.githubusercontent.com/69040142/155091345-79352cca-d52f-48de-9ace-12bc22f3d737.png)
+
+![Screenshot 2022-02-22 at 1 52 59 PM](https://user-images.githubusercontent.com/69040142/155092336-7d418334-bd7a-40e9-a4ff-6d0876351e99.png)
