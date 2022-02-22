@@ -1,112 +1,6 @@
-// import { NavigationContainer } from '@react-navigation/native';
-// import React from 'react';
-// import {StyleSheet, Text, View, TextInput, TouchableOpacity ,Button} from 'react-native';
-// import { useNavigation } from '@react-navigation/native';
-// import { GoogleSignin ,GoogleSigninButton} from '@react-native-google-signin/google-signin';
-// import auth from '@react-native-firebase/auth';
-// const HelloWorld = () => {
-//   GoogleSignin.configure({
-//     webClientId: '521787059313-g0se91oq639q0v4igtvm6ran0vasvaj7.apps.googleusercontent.com',
-//   });
-//   const navigation = useNavigation();
-//   const signInWithGoogle = async () =>{
-//     const { idToken } = await GoogleSignin.signIn();
-//     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-//     const user_sign_in =  auth().signInWithCredential(googleCredential);
-//     user_sign_in.then(re=>{
-//       console.log(re);  
-//     })
-//   } 
-//   return (
-//     <View style={styles.container}>
-//     <Text style={styles.logo}>LOGIN</Text>
-//     <View style={styles.inputView} >
-//       <TextInput  
-//         style={styles.inputText}
-//         placeholder="Email..." 
-//         placeholderTextColor="#003f5c"
-//         />
-//     </View>
-//     <View style={styles.inputView} >
-//       <TextInput  
-//         secureTextEntry
-//         style={styles.inputText}
-//         placeholder="Password..." 
-//         placeholderTextColor="#003f5c"
-//         />
-//     </View>
-//     <TouchableOpacity>
-//       <Text style={styles.forgot}>Forgot Password?</Text>
-//     </TouchableOpacity>
-//     <TouchableOpacity style={styles.loginBtn}>
-//       <Text style={styles.loginText}>LOGIN</Text>
-//     </TouchableOpacity>
-//     <TouchableOpacity>
-//       <Text style={styles.loginText}>Signup</Text>
-//     </TouchableOpacity>
-//     <GoogleSigninButton
-//       title="Google Sign-In"
-//       onPress={signInWithGoogle } 
-//     />
-
-//   </View>
-
-//   )
-// }
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#003f5c',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   logo:{
-//     fontWeight:"bold",
-//     fontSize:50,
-//     color:"#fb5b5a",
-//     marginBottom:40,
-//     fontFamily:'Shizuru-Regular'
-
-//   },
-//   inputView:{
-//     width:"80%",
-//     backgroundColor:"#465881",
-//     borderRadius:25,
-//     height:50,
-//     marginBottom:20,
-//     justifyContent:"center",
-//     padding:20
-//   },
-//   inputText:{
-//     height:50,
-//     color:"white"
-//   },
-//   forgot:{
-//     color:"white",
-//     fontSize:11
-//   },
-//   loginBtn:{
-//     width:"80%",
-//     backgroundColor:"#fb5b5a",
-//     borderRadius:25,
-//     height:50,
-//     alignItems:"center",
-//     justifyContent:"center",
-//     marginTop:40,
-//     marginBottom:10
-//   },
-//   loginText:{
-//     color:"white"
-//   }
-// });
-// export default HelloWorld;
-
-
-// Example of Google Sign In in React Native Android and iOS App
-// https://aboutreact.com/example-of-google-sign-in-in-react-native/
 
 // Import React in our code
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Import all the components we are going to use
 import {
@@ -115,23 +9,23 @@ import {
   Text,
   View,
   Image,
-  ActivityIndicator,  
+  ActivityIndicator,
   TouchableOpacity,
+  ImageBackground,
+  TextInput
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-// Import Google Signin
-// import {
-//   GoogleSignin,
-//   GoogleSigninButton,
-//   statusCodes,
-// } from 'react-native-google-signin';
-import { GoogleSignin ,GoogleSigninButton,statusCodes} from '@react-native-google-signin/google-signin';
+
+import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-google-signin/google-signin';
+import { Button } from 'react-native-paper';
+// import { TextInput } from 'react-native-gesture-handler';
 
 const App = () => {
   const navigation = useNavigation();
   const [userInfo, setUserInfo] = useState(null);
   const [gettingLoginStatus, setGettingLoginStatus] = useState(true);
-
+  const [text, onChangeText] = React.useState("");
+  const [number, onChangeNumber] = React.useState(null);
   useEffect(() => {
     // Initial configuration
     GoogleSignin.configure({
@@ -148,7 +42,7 @@ const App = () => {
   const _isSignedIn = async () => {
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (isSignedIn) {
-     // alert('User is already signed in');
+      // alert('User is already signed in');
       // Set User Info if user is already signed in
       _getCurrentUserInfo();
     } else {
@@ -192,8 +86,8 @@ const App = () => {
       } else if (error.code === statusCodes.IN_PROGRESS) {
         alert('Signing In');
       } else if (
-          error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE
-        ) {
+        error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE
+      ) {
         alert('Play Services Not Available or Outdated');
       } else {
         alert(error.message);
@@ -208,7 +102,7 @@ const App = () => {
       await GoogleSignin.revokeAccess();
       await GoogleSignin.signOut();
       // Removing user Info
-      setUserInfo(null); 
+      setUserInfo(null);
     } catch (error) {
       console.error(error);
     }
@@ -223,44 +117,67 @@ const App = () => {
     );
   } else {
     return (
-      <SafeAreaView style={{flex: 1}}>
-        <View style={styles.container}>
-          <Text style={styles.titleText}>
+      <SafeAreaView style={{ flex: 1, }}>
+
+        <ImageBackground style={styles.container}
+          source={require('../../assets/images/meric-tuna-CE1OvMrZumQ-unsplash.png')}>
+          <Image source={require('../../assets/images/logo.png')} style={{ alignContent: "flex-end", backgroundColor: "white", top: "45%", width: 120, height: 120, borderRadius: 120 / 2, }}></Image>
+
+        </ImageBackground>
+
+        {/* <Text style={styles.titleText}>
             Google Sign In
-          </Text>
-          <GoogleSigninButton
+          </Text> */}
+        {/* <GoogleSigninButton
                 style={{width: 312, height: 48}}
                 size={GoogleSigninButton.Size.Wide}
                 color={GoogleSigninButton.Color.Light}
                 onPress={_signIn}
-              />
-          {/* <View style={styles.container}>
-            {userInfo !== null ? (
-              <>
-                <Image
-                  source={{uri: userInfo.user.photo}}
-                  style={styles.imageStyle}
-                />
-                <Text style={styles.text}>
-                  Name: {userInfo.user.name}
-                </Text>
-                <Text style={styles.text}>
-                  Email: {userInfo.user.email}
-                </Text>
-              
-              </>
-            ) : (
-              <GoogleSigninButton
+              /> */}
+
+        <View style={{ flex: 0.55 }}  >
+          <View style={{ marginTop: 45, marginBottom: 20 }} >
+            <Text style={styles.titleText}>e-mail</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={onChangeText}
+              value={text}
+            />
+          </View>
+          <View style={{ marginBottom: 20 }} >
+            <Text style={styles.titleText}>password</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={onChangeNumber}
+              value={number}
+              placeholder="useless placeholder"
+              keyboardType="numeric"
+            />
+          </View>
+          <View style={{}} >
+            <Text style={styles.titleText2}>log in using</Text>
+            {/* <GoogleSigninButton
                 style={{width: 312, height: 48}}
-                size={GoogleSigninButton.Size.Wide}
-                color={GoogleSigninButton.Color.Light}
+               
                 onPress={_signIn}
-              />
-            )}
-          </View> */}
-       
+              /> */}
+            <View style={{ flexDirection: "row", alignContent: "center", alignSelf: "center" }} >
+              <TouchableOpacity onPress={_signIn} style={{ marginRight: 10, marginVertical: 10 }} >
+                <Image source={require('../../assets/images/google.png')}
+                  style={{ height: 40, width: 40, borderRadius: 40 / 2, borderWidth: 1, borderColor: "#ABAA88", }}></Image>
+              </TouchableOpacity>
+              <TouchableOpacity style={{ marginLeft: 10, marginVertical: 10 }}>
+                <Image source={require('../../assets/images/facebook3.png')}
+                  style={{ height: 40, width: 40, borderRadius: 40 / 2, borderWidth: 1, borderColor: "#ABAA88", }}></Image>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.input2}>
+            <Text style={{color:"white",fontSize:15}}>SIGN IN</Text>
+            </View>
+
+          </View>
         </View>
-      
+
       </SafeAreaView>
     );
   }
@@ -270,17 +187,48 @@ export default App;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
+    flex: 0.45,
+    //  backgroundColor: "red",
     alignItems: 'center',
     justifyContent: 'center',
+    //  padding: 10,
+  },
+  input: {
+    height: 45,
+    width: "80%",
+    margin: 2,
+    borderWidth: 2,
+    borderColor: "#ABAA88",
+    borderRadius: 4,
     padding: 10,
+    marginHorizontal: 30,alignSelf:"center"
+  },
+  input2: {
+    height: 45,
+    width: "80%",
+    margin: 2,
+   // borderWidth: 2,
+    backgroundColor: "#ABAA88",
+    borderRadius: 4,
+    padding: 10,
+    marginHorizontal: 30,
+  alignSelf:"center",justifyContent:"center",alignItems:"center"
   },
   titleText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    padding: 20,
+    fontSize: 14,
+    //fontWeight: 'bold',
+    textAlign: "left",
+    // padding: 20,
+    color: "#ABAA88",
+    marginHorizontal: 40
+  },
+  titleText2: {
+    fontSize: 14,
+    //fontWeight: 'bold',
+    textAlign: "center",
+    // padding: 20,
+    color: "#ABAA88",
+    marginHorizontal: 30
   },
   imageStyle: {
     width: 200,
