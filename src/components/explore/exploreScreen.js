@@ -1,7 +1,22 @@
-import React from 'react';
-import { Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Text, View,TouchableOpacity,StyleSheet } from 'react-native';
+import { useDispatch,useSelector } from 'react-redux'
+import { useNavigation } from '@react-navigation/native';
+import {types} from '../../action/actionType'
+const explore = () => {
+  const apilistdata = useSelector((state) => state.counter?.displayapi)
+  const dispatch = useDispatch()
+  const navigation = useNavigation();
+  const getApiData =()=>{
+    dispatch({
+      type: types.GET_API,
+      payload: "id",      
+  })
+  }
+    useEffect(() => {
+   getApiData();
+  }, []);
 
-const exploreScreen = () => {
   return (
     <View
       style={{
@@ -10,7 +25,14 @@ const exploreScreen = () => {
         alignItems: "center"
       }}>
       <Text>explore screen!</Text>
+       <FlatList
+            data={apilistdata}
+            keyExtractor={item => item.id}
+            renderItem={({ item }) => (
+              <Text  style={{color:"blue",fontSize: 20,}}>{item.id + '. ' + item.title}</Text>
+            )}
+          />
     </View>
   )
-}
-export default exploreScreen;
+} 
+export default explore;

@@ -1,6 +1,7 @@
 import types from '../action/actionType'
 const initialState = {
-    counter: ''
+    counter: '',
+    
 }
 const addReducer = (state = initialState, action) => {
     switch (action.type) {
